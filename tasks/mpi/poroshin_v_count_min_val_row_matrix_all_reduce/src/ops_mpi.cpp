@@ -11,8 +11,8 @@
 using namespace std::chrono_literals;
 
 template <typename T>
-void poroshin_v_count_min_val_row_matrix_all_reduce_mpi::MyTestMPITaskParallel::my_all_reduce(const boost::mpi::communicator& comm,
-                                                                                  const T& value, T& out_value) {
+void poroshin_v_count_min_val_row_matrix_all_reduce_mpi::MyTestMPITaskParallel::my_all_reduce(
+    const boost::mpi::communicator& comm, const T& value, T& out_value) {
   unsigned int rank = comm.rank();
   unsigned int size = comm.size();
   unsigned int id_child_1 = 2 * rank + 1;
@@ -165,7 +165,7 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::MyTestMPITaskParallel::
 bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::MyTestMPITaskParallel::run() {
   internal_order_test();
 
-  //part 1 - finding minimums in row and matrix
+  // part 1 - finding minimums in row and matrix
 
   int m = 0;
   int n = 0;
@@ -199,13 +199,11 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::MyTestMPITaskParallel::
   unsigned int id = world.rank() * local_input_.size() / n;
 
   for (unsigned int i = 0; i < id; i++) {
-    //all_reduce(world, INT_MAX, res_, boost::mpi::minimum<int>());
     my_all_reduce(world, INT_MAX, res_);
   }
 
   delta = std::min(local_input_.size(), n - world.rank() * local_input_.size() % n);
   int l_res = *std::min_element(local_input_.begin(), local_input_.begin() + delta);
-  //all_reduce(world, l_res, res_, boost::mpi::minimum<int>());
   my_all_reduce(world, l_res, res_);
   id++;
   unsigned int k = 0;
@@ -213,19 +211,17 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::MyTestMPITaskParallel::
   while (local_input_.begin() + delta + k * n < local_input_.end() - last) {
     l_res = *std::min_element(local_input_.begin() + delta + k * n,
                               std::min(local_input_.end(), local_input_.begin() + delta + (k + 1) * n));
-    //all_reduce(world, l_res, res_, boost::mpi::minimum<int>());
     my_all_reduce(world, l_res, res_);
     k++;
     id++;
   }
 
   for (unsigned int i = id; i < res.size(); i++) {
-    //all_reduce(world, INT_MAX, res_, boost::mpi::minimum<int>());
     my_all_reduce(world, INT_MAX, res_);
   }
 
   /////////////////////////////////////////////////////////////////////////////////////////
-  
+
   // part 2 - counting minimums in row
 
   id = world.rank() * local_input_.size() / n;
