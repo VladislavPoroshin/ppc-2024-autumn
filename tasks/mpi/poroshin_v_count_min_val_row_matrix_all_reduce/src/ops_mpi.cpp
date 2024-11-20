@@ -97,7 +97,15 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::TestMPITaskSequential::
 
   int m = taskData->inputs_count[0];
   int n = taskData->inputs_count[1];
-  int res_ = *std::min_element(input_.begin(), input_.end());
+  int res_ = INT_MAX;
+
+  for (int i = 0; i < m; i++) {
+    int mn = INT_MAX;
+    for (int j = n * i; j < n * i + n; j++) {
+      mn = std::min(mn, input_[j]);
+    }
+    res_ = std::min(mn, res_);
+  }
 
   for (int i = 0; i < m; i++) {
     int count = 0;
