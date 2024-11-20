@@ -121,14 +121,12 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::TestMPITaskSequential::
 bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::MyTestMPITaskParallel::pre_processing() {
   internal_order_test();
 
-  int res_ = 0;
   int n = 0;
   int m = 0;
   int size = 0;
   unsigned int delta = 0;
 
   if (world.rank() == 0) {
-    res_ = INT_MAX;
     m = taskData->inputs_count[0];
     n = taskData->inputs_count[1];
     size = n * m;
@@ -266,14 +264,12 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::MyTestMPITaskParallel::
 bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::TestMPITaskParallel::pre_processing() {
   internal_order_test();
 
-  int res_ = 0;
   int n = 0;
   int m = 0;
   int size = 0;
   unsigned int delta = 0;
 
   if (world.rank() == 0) {
-    res_ = INT_MAX;
     m = taskData->inputs_count[0];
     n = taskData->inputs_count[1];
     size = n * m;
