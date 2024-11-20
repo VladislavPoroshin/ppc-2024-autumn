@@ -121,12 +121,14 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::TestMPITaskSequential::
 bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::MyTestMPITaskParallel::pre_processing() {
   internal_order_test();
 
+  int res_ = 0;
   int n = 0;
   int m = 0;
   int size = 0;
   unsigned int delta = 0;
 
   if (world.rank() == 0) {
+    res_ = INT_MAX;
     m = taskData->inputs_count[0];
     n = taskData->inputs_count[1];
     size = n * m;
@@ -161,12 +163,14 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::MyTestMPITaskParallel::
 
   // part 1 - finding minimums in row and matrix
 
+  int res_ = 0;
   int m = 0;
   int n = 0;
   int size = 0;
   unsigned int delta = 0;
 
   if (world.rank() == 0) {
+    res_ = INT_MAX;
     m = taskData->inputs_count[0];
     n = taskData->inputs_count[1];
     size = n * m;
@@ -180,6 +184,7 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::MyTestMPITaskParallel::
   broadcast(world, m, 0);
   broadcast(world, n, 0);
   broadcast(world, delta, 0);
+  broadcast(world, res_, 0);
 
   local_input_ = std::vector<int>(delta);
   boost::mpi::scatter(world, input_.data(), local_input_.data(), delta, 0);
@@ -261,12 +266,14 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::MyTestMPITaskParallel::
 bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::TestMPITaskParallel::pre_processing() {
   internal_order_test();
 
+  int res_ = 0;
   int n = 0;
   int m = 0;
   int size = 0;
   unsigned int delta = 0;
 
   if (world.rank() == 0) {
+    res_ = INT_MAX;
     m = taskData->inputs_count[0];
     n = taskData->inputs_count[1];
     size = n * m;
@@ -301,12 +308,14 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::TestMPITaskParallel::ru
 
   // part 1 - finding minimums in row and matrix
 
+  int res_ = 0;
   int m = 0;
   int n = 0;
   int size = 0;
   unsigned int delta = 0;
 
   if (world.rank() == 0) {
+    res_ = INT_MAX;
     m = taskData->inputs_count[0];
     n = taskData->inputs_count[1];
     size = n * m;
@@ -320,6 +329,7 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::TestMPITaskParallel::ru
   broadcast(world, m, 0);
   broadcast(world, n, 0);
   broadcast(world, delta, 0);
+  broadcast(world, res_, 0);
 
   local_input_ = std::vector<int>(delta);
   boost::mpi::scatter(world, input_.data(), local_input_.data(), delta, 0);
