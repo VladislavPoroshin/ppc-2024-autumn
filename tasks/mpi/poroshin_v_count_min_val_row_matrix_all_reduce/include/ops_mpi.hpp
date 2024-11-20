@@ -43,7 +43,6 @@ class TestMPITaskParallel : public ppc::core::Task {
   std::vector<int> input_;         // Input vector
   std::vector<int> local_input_;   // Local input vector
   std::vector<int> res;            // Result vector
-  // int res_{INT_MAX};               // Local result value
   boost::mpi::communicator world;  // MPI communicator
 };
 
@@ -62,7 +61,6 @@ class MyTestMPITaskParallel : public ppc::core::Task {
   std::vector<int> input_;         // Input vector
   std::vector<int> local_input_;   // Local input vector
   std::vector<int> res;            // Result vector
-  // int res_{INT_MAX};               // Local result value
   boost::mpi::communicator world;  // MPI communicator
 };
 
