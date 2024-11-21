@@ -310,18 +310,16 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::TestMPITaskParallel::ru
   int size = 0;
   unsigned int delta = 0;
 
-  if (world.rank() == 0) {
-    res_ = INT_MAX;
-    m = taskData->inputs_count[0];
-    n = taskData->inputs_count[1];
-    size = n * m;
-    if (size % world.size() == 0) {
-      delta = size / world.size();
-    } else {
-      delta = size / world.size() + 1;
-    }
-    res.resize(m, INT_MAX);
+  res_ = INT_MAX;
+  m = taskData->inputs_count[0];
+  n = taskData->inputs_count[1];
+  size = n * m;
+  if (size % world.size() == 0) {
+    delta = size / world.size();
+  } else {
+    delta = size / world.size() + 1;
   }
+  res.resize(m, INT_MAX);
 
   broadcast(world, m, 0);
   broadcast(world, n, 0);
