@@ -356,9 +356,9 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::TestMPITaskParallel::ru
     id++;
   }
 
-  // for (unsigned int i = id; i < res.size(); i++) {
-  //   all_reduce(world, INT_MAX, res_, boost::mpi::minimum<int>());
-  // }
+  for (unsigned int i = id; i < res.size(); i++) {
+    all_reduce(world, INT_MAX, res_, boost::mpi::minimum<int>());
+  }
 
   /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -383,9 +383,9 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::TestMPITaskParallel::ru
     id++;
   }
 
-  // for (unsigned int i = id; i < res.size(); i++) {
-  //   reduce(world, INT_MAX, res[i], boost::mpi::minimum<int>(), 0);
-  // }
+  for (unsigned int i = id; i < res.size(); i++) {
+    reduce(world, INT_MAX, res[i], boost::mpi::minimum<int>(), 0);
+  }
 
   return true;
 }
