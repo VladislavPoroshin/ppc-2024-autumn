@@ -177,6 +177,7 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::MyTestMPITaskParallel::
     } else {
       delta = size / world.size() + 1;
     }
+    res.resize(m, INT_MAX);
   }
 
   broadcast(world, m, 0);
@@ -186,7 +187,6 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::MyTestMPITaskParallel::
 
   local_input_ = std::vector<int>(delta);
   boost::mpi::scatter(world, input_.data(), local_input_.data(), delta, 0);
-  res.resize(m, INT_MAX);
   unsigned int last = 0;
 
   if (world.rank() == world.size() - 1) {
@@ -216,8 +216,6 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::MyTestMPITaskParallel::
   for (unsigned int i = id; i < res.size(); i++) {
     my_all_reduce(world, INT_MAX, res_);
   }
-
-  world.barrier();
 
   /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -322,6 +320,7 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::TestMPITaskParallel::ru
     } else {
       delta = size / world.size() + 1;
     }
+    res.resize(m, INT_MAX);
   }
 
   broadcast(world, m, 0);
@@ -331,7 +330,6 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::TestMPITaskParallel::ru
 
   local_input_ = std::vector<int>(delta);
   boost::mpi::scatter(world, input_.data(), local_input_.data(), delta, 0);
-  res.resize(m, INT_MAX);
   unsigned int last = 0;
 
   if (world.rank() == world.size() - 1) {
@@ -371,24 +369,24 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::TestMPITaskParallel::ru
   id = world.rank() * local_input_.size() / n;
 
   for (unsigned int i = 0; i < id; i++) {
-    all_reduce(world, INT_MAX, res[i], boost::mpi::minimum<int>());
+    reduce(world, INT_MAX, res[i], boost::mpi::minimum<int>(), 0);
   }
 
   l_res = std::count(local_input_.begin(), local_input_.begin() + delta, res_);
-  all_reduce(world, l_res, res[id], boost::mpi::minimum<int>());
+  reduce(world, l_res, res[id], boost::mpi::minimum<int>(), 0);
   id++;
   k = 0;
 
   while (local_input_.begin() + delta + k * n < local_input_.end() - last) {
     l_res = std::count(local_input_.begin() + delta + k * n,
                        std::min(local_input_.end(), local_input_.begin() + delta + (k + 1) * n), res_);
-    all_reduce(world, l_res, res[id], boost::mpi::minimum<int>());
+    reduce(world, l_res, res[id], boost::mpi::minimum<int>(), 0);
     k++;
     id++;
   }
 
   for (unsigned int i = id; i < res.size(); i++) {
-    all_reduce(world, INT_MAX, res[i], boost::mpi::minimum<int>());
+    reduce(world, INT_MAX, res[i], boost::mpi::minimum<int>(), 0);
   }
 
   return true;
