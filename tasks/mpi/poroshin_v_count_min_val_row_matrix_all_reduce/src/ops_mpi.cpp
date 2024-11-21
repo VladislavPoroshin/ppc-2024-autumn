@@ -217,6 +217,8 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::MyTestMPITaskParallel::
     my_all_reduce(world, INT_MAX, res_);
   }
 
+  world.barrier();
+
   /////////////////////////////////////////////////////////////////////////////////////////
 
   // part 2 - counting minimums in row
@@ -359,6 +361,8 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::TestMPITaskParallel::ru
   for (unsigned int i = id; i < res.size(); i++) {
     all_reduce(world, INT_MAX, res_, boost::mpi::minimum<int>());
   }
+
+  world.barrier();
 
   /////////////////////////////////////////////////////////////////////////////////////////
 
