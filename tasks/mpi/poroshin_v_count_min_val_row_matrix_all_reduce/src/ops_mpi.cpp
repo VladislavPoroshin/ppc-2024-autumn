@@ -341,7 +341,7 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::TestMPITaskParallel::ru
   unsigned int id = world.rank() * local_input_.size() / n;
 
   for (unsigned int i = 0; i < id; i++) {
-    all_reduce(world, INT_MAX, res_, boost::mpi::minimum<int>());
+    reduce(world, INT_MAX, res_, boost::mpi::minimum<int>(), 0);
   }
 
   delta = std::min(local_input_.size(), n - world.rank() * local_input_.size() % n);
@@ -359,7 +359,7 @@ bool poroshin_v_count_min_val_row_matrix_all_reduce_mpi::TestMPITaskParallel::ru
   }
 
   for (unsigned int i = id; i < res.size(); i++) {
-    all_reduce(world, INT_MAX, res_, boost::mpi::minimum<int>());
+    reduce(world, INT_MAX, res_, boost::mpi::minimum<int>(), 0);
   }
 
   world.barrier();
